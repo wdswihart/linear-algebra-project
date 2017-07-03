@@ -1,14 +1,18 @@
-# gui is the GUI implementation for the project in Linear Algebra.
+# gui is the GUI implementation for the project in Linear Algebra,
+# using Python 2.7.
 #
 # William Swihart
 # University of Central Arkansas
 # Summer 2017
 
-import wx # wxPython 3.0 amd-64
+import wx # wxPython 3.0 amd-64 (made for Python 2.7)
 
-app = wx.App()
+def initComponents():
+	app = wx.App()
+	frame = wx.Frame(None, -1, 'Fractal Compression')
+	frame.Show()
+	return app, frame
 
-frame = wx.Frame(None, -1, 'Fractal Compression')
-frame.Show()
+app, frame = initComponents()
 
 app.MainLoop()
