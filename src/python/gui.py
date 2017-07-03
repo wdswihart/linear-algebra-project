@@ -1,7 +1,7 @@
 # gui is the GUI implementation for the project in Linear Algebra,
 # using Python 2.7.
 #
-# William Swihart
+# William Swihart, Nick Phillips
 # University of Central Arkansas
 # Summer 2017
 
