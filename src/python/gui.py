@@ -16,7 +16,9 @@ frameHeight = ctypes.windll.user32.GetSystemMetrics(1) / 1.5 # 	and height will 
 class Gui(wx.Frame):
 	# FIELDS
 	
-	imgPath = '../../res/Lena.jpg' # Default image path
+	panel = None # Container for image view and buttons
+	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image
+	defaultImgPath = '../../res/Lena.jpg' # Default image path
 
 	# INITIALIZERS
 	
@@ -46,25 +48,32 @@ class Gui(wx.Frame):
 		self.SetMenuBar(self.menuBar)
 		
 		# Add a container panel and horizontal box sizer.
-		panel = wx.Panel(self)
+		self.panel = wx.Panel(self)
 		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		
-		# Add the image view.
-		img = wx.Image(self.imgPath, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-		hbox.Add(wx.StaticBitmap(self, -1, img, (10, 5), (img.GetWidth(), img.GetHeight()))
-, 0, wx.ALIGN_CENTER)
+		# Add the image view in a vertical box sizer.
+		self.draw(self.defaultImgPath)
+		hbox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
 		
 		# Add the buttons in a vertical box sizer.
-		vbox = wx.BoxSizer(wx.VERTICAL)
+		btnVBox = wx.BoxSizer(wx.VERTICAL)
 		
-		self.testBtn = wx.Button(panel, -1, "TEST")
-		vbox.Add(self.testBtn, 0, wx.ALIGN_CENTER)
-		self.testBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		testBtn = wx.Button(self.panel, -1, "UBUNTU")
+		testBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		btnVBox.Add(testBtn, 0, wx.ALIGN_CENTER)
 		
-		hbox.Add(vbox, 1, wx.ALIGN_CENTER)
+		testBtn2 = wx.Button(self.panel, -1, 'TESTES')
+		testBtn2.Bind(wx.EVT_BUTTON, self.onPress)
+		btnVBox.Add(testBtn2, 1, wx.ALIGN_CENTER)
+		
+		defaultBtn = wx.Button(self.panel, -1, 'DEFAULT')
+		defaultBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		btnVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
+		
+		hbox.Add(btnVBox, 1, wx.ALIGN_CENTER)
 		
 		# Set sizers.
-		panel.SetSizer(hbox)
+		self.panel.SetSizer(hbox)
 		
 		# Set the size and orientation, and show the GUI.
 		self.SetSize((frameWidth, frameHeight))
@@ -76,6 +85,16 @@ class Gui(wx.Frame):
 		wx.Frame._init_(self, parent, title=title, size=(frameWidth,frameHeight))
 		
 	# METHODS
+	
+	# draw redraws the image view with the given image path.
+	# 	IN: self
+	#	OUT: void
+	def draw(self, path):
+		self.imgVBox.Clear(True)
+		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
+		scale = (frameWidth / img.GetWidth()) / 2.5
+		img = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
+		self.imgVBox.Add(wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight())), 0, wx.ALIGN_CENTER)
 	
 	# onAbout is the behavior associated with the 'About' File menu option.
 	# 	IN: self, event
@@ -89,6 +108,11 @@ class Gui(wx.Frame):
 	# 	IN: self, event
 	# 	OUT: void
 	def onPress(self, evt):
+		label = evt.GetEventObject().GetLabel()
+		if label == 'UBUNTU':
+			self.draw('../../res/linuxandroid.png')
+		if label == 'DEFAULT':
+			self.draw(self.defaultImgPath)
 		print 'Label = ', evt.GetEventObject().GetLabel()
 	
 	# onQuit is the behavior associated with the 'Exit to Desktop' File menu option.
