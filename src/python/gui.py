@@ -15,10 +15,8 @@ frameHeight = ctypes.windll.user32.GetSystemMetrics(1) / 1.5 # 	and height will 
 
 class Gui(wx.Frame):
 	# INITIALIZERS
-		
-	def _init_(self, parent, title):
-		# Call parent constructor and create the status bar at the bottom.
-		wx.Frame._init_(self, parent, title=title, size=(frameWidth,frameHeight))
+	
+	def initUI(self):
 		self.CreateStatusBar()
 		
 		# Add the menu bar.
@@ -26,11 +24,15 @@ class Gui(wx.Frame):
 		
 		# 	Add the File menu.
 		fileMenu = wx.Menu()
-		aboutItem = fileMenu.Append(wx.ID_ABOUT, 'About', 'About')
-		self.Bind(wx.EVT_MENU, self.onAbout, aboutItem) # Event binding for 'About' File menu item.
-		exitItem = fileMenu.Append(wx.ID_EXIT, 'Exit to Desktop', 'Exit to Desktop')
+		exitItem = fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
 		self.Bind(wx.EVT_MENU, self.onExit, exitItem) # Event binding for 'Exit to Desktop' File menu item.
 		menuBar.Append(fileMenu, 'File')
+		
+		# 	Add the Help menu.
+		helpMenu = wx.Menu()
+		aboutItem = helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
+		self.Bind(wx.EVT_MENU, self.onAbout, aboutItem) # Event binding for 'About' File menu item.
+		menuBar.Append(helpMenu, 'Help')
 		
 		# 	Add other menus (?).
 		#TO-DO
@@ -38,13 +40,19 @@ class Gui(wx.Frame):
 		self.SetMenuBar(menuBar)
 		
 		# Add the image view.
+		#TO-DO
 		
 		# Add the buttons.
 		#TO-DO
 		
-		# Set orientation of and show the GUI.
+		# Set the size and orientation, and show the GUI.
+		self.SetSize((frameWidth, frameHeight))
 		self.Centre()
 		self.Show(True)
+		
+	def _init_(self, parent, title):
+		# super()
+		wx.Frame._init_(self, parent, title=title, size=(frameWidth,frameHeight))
 		
 	# METHODS
 	
@@ -63,8 +71,9 @@ class Gui(wx.Frame):
 		self.Close(True)
 		
 app = wx.App(False)
-sys.stdout.write('Initializing GUI...')
+sys.stdout.write('Initializing GUI... ')
 gui = Gui(None, wx.ID_ANY, 'LA&M Project')
+gui.initUI()
 print 'Done!'
 print 'Running main loop...'
 app.MainLoop()
