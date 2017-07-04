@@ -14,49 +14,57 @@ frameWidth = ctypes.windll.user32.GetSystemMetrics(0) / 1.5 # Frame width will b
 frameHeight = ctypes.windll.user32.GetSystemMetrics(1) / 1.5 # 	and height will be 1/1.5 screen height
 
 class Gui(wx.Frame):
+	# FIELDS
+	
+	imgPath = '../../res/Lena.jpg' # Default image path
+
 	# INITIALIZERS
 	
 	def initUI(self):
+		# Add the status bar.
 		self.CreateStatusBar()
 		
 		# Add the menu bar.
-		menuBar = wx.MenuBar()
+		self.menuBar = wx.MenuBar()
 		
 		# 	Add the File menu.
-		fileMenu = wx.Menu()
-		exitItem = fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
+		self.fileMenu = wx.Menu()
+		exitItem = self.fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
 		self.Bind(wx.EVT_MENU, self.onExit, exitItem) # Event binding for 'Exit to Desktop' File menu item.
-		menuBar.Append(fileMenu, 'File')
+		self.menuBar.Append(self.fileMenu, 'File')
 		
 		
 		# 	Add the Help menu.
-		helpMenu = wx.Menu()
-		aboutItem = helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
+		self.helpMenu = wx.Menu()
+		aboutItem = self.helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
 		self.Bind(wx.EVT_MENU, self.onAbout, aboutItem) # Event binding for 'About' File menu item.
-		menuBar.Append(helpMenu, 'Help')
+		self.menuBar.Append(self.helpMenu, 'Help')
 		
 		# 	Add other menus (?).
 		#TO-DO
 		
-		self.SetMenuBar(menuBar)
+		self.SetMenuBar(self.menuBar)
 		
 		# Add a container panel and horizontal box sizer.
-		container = wx.Panel(self)
+		panel = wx.Panel(self)
 		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		
-		# Add the image view in a panel and vertical box sizer.
+		# Add the image view.
+		img = wx.Image(self.imgPath, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+		hbox.Add(wx.StaticBitmap(self, -1, img, (10, 5), (img.GetWidth(), img.GetHeight()))
+, 0, wx.ALIGN_CENTER)
 		
-		#TO-DO
+		# Add the buttons in a vertical box sizer.
+		vbox = wx.BoxSizer(wx.VERTICAL)
 		
-		# Add the buttons in another panel and vertical box sizer.
-		buttonPanel = wx.Panel(self)
-		buttonVBox = wx.BoxSizer(wx.VERTICAL)
+		self.testBtn = wx.Button(panel, -1, "TEST")
+		vbox.Add(self.testBtn, 0, wx.ALIGN_CENTER)
+		self.testBtn.Bind(wx.EVT_BUTTON, self.onPress)
 		
-		self.testButton = wx.Button(buttonPanel, -1, 'TEST')
-		self.testButton.Bind(wx.EVT_BUTTON, self.onPress)
-		buttonVBox.Add(self.testButton, 0, wx.ALIGN_CENTER)
+		hbox.Add(vbox, 1, wx.ALIGN_CENTER)
 		
-		hbox.Add(buttonVBox, 0, wx.ALIGN_CENTER)
+		# Set sizers.
+		panel.SetSizer(hbox)
 		
 		# Set the size and orientation, and show the GUI.
 		self.SetSize((frameWidth, frameHeight))
