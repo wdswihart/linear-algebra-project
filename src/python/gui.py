@@ -20,25 +20,25 @@ class Gui(wx.Frame):
 		self.CreateStatusBar()
 		
 		# Add the menu bar.
-		menuBar = wx.MenuBar()
+		self.menuBar = wx.MenuBar()
 		
 		# 	Add the File menu.
-		fileMenu = wx.Menu()
-		exitItem = fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
+		self.fileMenu = wx.Menu()
+		exitItem = self.fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
 		self.Bind(wx.EVT_MENU, self.onExit, exitItem) # Event binding for 'Exit to Desktop' File menu item.
-		menuBar.Append(fileMenu, 'File')
+		self.menuBar.Append(self.fileMenu, 'File')
 		
 		
 		# 	Add the Help menu.
-		helpMenu = wx.Menu()
-		aboutItem = helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
+		self.helpMenu = wx.Menu()
+		aboutItem = self.helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
 		self.Bind(wx.EVT_MENU, self.onAbout, aboutItem) # Event binding for 'About' File menu item.
-		menuBar.Append(helpMenu, 'Help')
+		self.menuBar.Append(self.helpMenu, 'Help')
 		
 		# 	Add other menus (?).
 		#TO-DO
 		
-		self.SetMenuBar(menuBar)
+		self.SetMenuBar(self.menuBar)
 		
 		# Add a container panel and horizontal box sizer.
 		container = wx.Panel(self)
@@ -49,14 +49,18 @@ class Gui(wx.Frame):
 		#TO-DO
 		
 		# Add the buttons in another panel and vertical box sizer.
-		buttonPanel = wx.Panel(self)
+		buttonPanel = wx.Panel(container)
 		buttonVBox = wx.BoxSizer(wx.VERTICAL)
 		
 		self.testButton = wx.Button(buttonPanel, -1, 'TEST')
 		self.testButton.Bind(wx.EVT_BUTTON, self.onPress)
 		buttonVBox.Add(self.testButton, 0, wx.ALIGN_CENTER)
 		
-		hbox.Add(buttonVBox, 0, wx.ALIGN_CENTER)
+		hbox.Add(buttonVBox, 1, wx.ALIGN_CENTER)
+		
+		# Set the sizers for the panels.
+		container.SetSizer(hbox)
+		buttonPanel.SetSizer(buttonVBox)
 		
 		# Set the size and orientation, and show the GUI.
 		self.SetSize((frameWidth, frameHeight))
@@ -83,11 +87,12 @@ class Gui(wx.Frame):
 	def onPress(self, evt):
 		print 'Label = ', evt.GetEventObject().GetLabel()
 	
-	# onQuit is the behavior associated with the 'Exit to Desktop' File menu option.
+	# onExit is the behavior associated with the 'Exit to Desktop' File menu option.
 	# 	IN: self, event
 	# 	OUT: void
 	def onExit(self, evt):
-		self.Close(True)
+		print 'Gui.onExit	testing'
+		self.Close()
 		
 app = wx.App(False)
 sys.stdout.write('Initializing GUI... ')
