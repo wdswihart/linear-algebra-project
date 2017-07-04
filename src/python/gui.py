@@ -28,6 +28,7 @@ class Gui(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.onExit, exitItem) # Event binding for 'Exit to Desktop' File menu item.
 		menuBar.Append(fileMenu, 'File')
 		
+		
 		# 	Add the Help menu.
 		helpMenu = wx.Menu()
 		aboutItem = helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
@@ -39,11 +40,23 @@ class Gui(wx.Frame):
 		
 		self.SetMenuBar(menuBar)
 		
-		# Add the image view.
+		# Add a container panel and horizontal box sizer.
+		container = wx.Panel(self)
+		hbox = wx.BoxSizer(wx.HORIZONTAL)
+		
+		# Add the image view in a panel and vertical box sizer.
+		
 		#TO-DO
 		
-		# Add the buttons.
-		#TO-DO
+		# Add the buttons in another panel and vertical box sizer.
+		buttonPanel = wx.Panel(self)
+		buttonVBox = wx.BoxSizer(wx.VERTICAL)
+		
+		self.testButton = wx.Button(buttonPanel, -1, 'TEST')
+		self.testButton.Bind(wx.EVT_BUTTON, self.onPress)
+		buttonVBox.Add(self.testButton, 0, wx.ALIGN_CENTER)
+		
+		hbox.Add(buttonVBox, 0, wx.ALIGN_CENTER)
 		
 		# Set the size and orientation, and show the GUI.
 		self.SetSize((frameWidth, frameHeight))
@@ -57,17 +70,23 @@ class Gui(wx.Frame):
 	# METHODS
 	
 	# onAbout is the behavior associated with the 'About' File menu option.
-	# 	IN: self, error
-	#		OUT: void
-	def onAbout(self, e):
+	# 	IN: self, event
+	#	OUT: void
+	def onAbout(self, evt):
 		dlg = wx.MessageDialog(self, 'A fractal compression demonstration', 'About LA&M Project')
 		dlg.ShowModal()
 		dlg.Destroy()
+		
+	# onPress is the handler for button presses
+	# 	IN: self, event
+	# 	OUT: void
+	def onPress(self, evt):
+		print 'Label = ', evt.GetEventObject().GetLabel()
 	
 	# onQuit is the behavior associated with the 'Exit to Desktop' File menu option.
-	# 	IN: self, error
+	# 	IN: self, event
 	# 	OUT: void
-	def onExit(self, e):
+	def onExit(self, evt):
 		self.Close(True)
 		
 app = wx.App(False)
