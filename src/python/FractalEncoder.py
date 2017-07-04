@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> will-edit
 #Falla Coulibaly
 
 import sys
@@ -315,6 +318,7 @@ class FractalEncoder:
 
                 #Write the transformation data the file
                 self.__writeToFIle('Lenna.fif')
+<<<<<<< HEAD
 =======
 #Falla Coulibaly
 
@@ -633,3 +637,5 @@ class FractalEncoder:
                 #Write the transformation data the file
                 self.__writeToFIle('Lenna.fif')
 >>>>>>> dccd69f0615c169e63399c4868d58f3999427247
+=======
+>>>>>>> will-edit

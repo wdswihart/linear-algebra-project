@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> will-edit
 #Falla Coulibaly
 
 from PIL import Image
@@ -121,6 +124,7 @@ class FractalDecoder:
                         self.__nextStep()
                 #Display result of the decoding
                 self.__showResult()
+<<<<<<< HEAD
 =======
 #Falla Coulibaly
 
@@ -245,3 +249,5 @@ class FractalDecoder:
                 #Display result of the decoding
                 self.__showResult()
 >>>>>>> dccd69f0615c169e63399c4868d58f3999427247
+=======
+>>>>>>> will-edit

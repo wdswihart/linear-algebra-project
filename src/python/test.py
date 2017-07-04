@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> will-edit
 #Falla Coulibaly
 
 #Simple implementation of the fractal compression.
@@ -37,6 +40,7 @@ if __name__ == '__main__':
         start = time.time()
         decoder.decodeImage(nSteps)
         print("Elapsed time : {0}".format(time.time() - start))
+<<<<<<< HEAD
 =======
 #Falla Coulibaly
 
@@ -77,3 +81,5 @@ if __name__ == '__main__':
         decoder.decodeImage(nSteps)
         print("Elapsed time : {0}".format(time.time() - start))
 >>>>>>> dccd69f0615c169e63399c4868d58f3999427247
+=======
+>>>>>>> will-edit
