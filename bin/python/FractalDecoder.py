@@ -1,6 +1,10 @@
-#Falla Coulibaly
+# FractalDecoder contains all the classes needed to decode a fractal-compressed image.
+#
+# Falla Coulibaly, William Swihart
+# University of Central Arkansas
+# Summer 2017 
 
-from PIL import Image
+import wx #from PIL import Image
 
 class CompressedImage:
         def __init__(self, filename, scale):

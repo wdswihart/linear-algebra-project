@@ -1,9 +1,13 @@
-#Falla Coulibaly
+# FractalEncoder contains all the classes needed to fractal-compress an image.
+#
+# Falla Coulibaly, William Swihart
+# University of Central Arkansas
+# Summer 2017 
 
 import sys
 import multiprocessing
 import threading
-from PIL import Image
+import wix #from PIL import Image
           
 class RangeBlock:
         def __init__(self, pixels):
