@@ -48,7 +48,6 @@ class Gui(wx.Frame):
 	hbox = wx.BoxSizer(wx.HORIZONTAL) # Sizer for panel (above)
 	leftVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for left side of frame
 	rightVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for right side of frame
-<<<<<<< HEAD
 	leftImgView = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
 	rightImgView = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding images on the right
 
@@ -74,20 +73,17 @@ class Gui(wx.Frame):
 		self.backBtn = None
 	
 	def draw(self):
-=======
-	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
-	defaultImgPath = '../../res/Lena.jpg' # Default image path
+		imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
+		defaultImgPath = '../../res/Lena.jpg' # Default image path
 	
 	# Gui INITIALIZERS:
 
 	def initUI(self):
->>>>>>> will-edit
 		"""
 		draw adds the left and right vboxes into the hbox, and adds it to the panel.
 			IN: self
 			OUT: void
 		"""
-<<<<<<< HEAD
 		align = wx.EXPAND
 		
 		self.hbox = wx.BoxSizer(wx.HORIZONTAL)
@@ -164,12 +160,10 @@ class Gui(wx.Frame):
 	
 	def drawMenuBar(self):
 		# Add menu bar.
-=======
 		# Add the status bar.
 		self.statusBar = self.CreateStatusBar()
 
 		# Add the menu bar.
->>>>>>> will-edit
 		self.menuBar = wx.MenuBar()
 		
 		# 	Add File menu.
@@ -183,7 +177,6 @@ class Gui(wx.Frame):
 		self.aboutItem = self.helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
 		self.Bind(wx.EVT_MENU, self.onAbout, self.aboutItem)
 		self.menuBar.Append(self.helpMenu, 'Help')
-<<<<<<< HEAD
 		
 		self.SetMenuBar(self.menuBar)
 	
@@ -211,8 +204,6 @@ class Gui(wx.Frame):
 		# Set orientation and show GUI.
 		self.Centre()
 		self.Show()
-		
-=======
 
 		# 	Add other menus (?)
 		#TO-DO
@@ -252,26 +243,19 @@ class Gui(wx.Frame):
 		self.SetSize((frameWidth, frameHeight))
 		self.Centre()
 		self.Show(True)
-
->>>>>>> will-edit
+		
 	def _init_(self, parent, title):
 		# super()
 		wx.Frame._init_(self, parent, title=title, size=(frameWidth,frameHeight))
 
 	# Gui METHODS:
-<<<<<<< HEAD
 	
-	def getImgView(self, path):
-=======
-
 	def setImgView(self, path):
->>>>>>> will-edit
 		""" 
 		draw updates imgVBox (the image view) with a new filepath.
 			IN: self
 			OUT: the image view that was created 
 		"""
-<<<<<<< HEAD
 		imgView = wx.BoxSizer(wx.VERTICAL)
 		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
 		scale = (frameWidth / img.GetWidth()) / 2.5
@@ -280,16 +264,7 @@ class Gui(wx.Frame):
 		imgView = wx.BoxSizer(wx.VERTICAL)
 		imgView.Add(bmp, 0, wx.EXPAND)
 		return imgView
-	
-=======
-		self.imgVBox.Clear(True)
-		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
-		scale = (frameWidth / img.GetWidth()) / 2.5
-		img = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
-		bmp = wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight()))
-		self.imgVBox.Add(bmp, 0, wx.ALIGN_CENTER)
 		
->>>>>>> will-edit
 	# Gui HANDLERS:
 
 	def onAbout(self, evt):
@@ -319,8 +294,6 @@ class Gui(wx.Frame):
 		
 		# Check the label:
 		if label == 'Ubuntu':
-<<<<<<< HEAD
-			self.leftVBox.Clear()
 			sys.stdout.write('Drawing ' + ubuntuImg + '... ')
 			path = resPath + ubuntuImg
 			self.leftImgVBox.Add(self.draw(path), 0, wx.ALIGN_CENTER)
@@ -344,7 +317,6 @@ class Gui(wx.Frame):
 			backBtn = wx.Button(self.panel, -1, '<-- Back')
 			backBtn.Bind(wx.EVT_BUTTON, self.onPress)
 			self.rightVBox.Add(backBtn, 1, wx.ALIGN_CENTER)
-=======
 			sys.stdout.write('Drawing ' + ubuntuImg + '... ')
 			self.setImgView(resPath + ubuntuImg)
 		elif label == 'Fern':
@@ -355,7 +327,6 @@ class Gui(wx.Frame):
 			self.setImgView(resPath + defaultImg)
 		elif label == 'Fractalize!':
 			sys.stdout.write('Handling ' + evt.GetEventObject().GetLabel() + ' event... ')
->>>>>>> will-edit
 			
 		print 'Done!'
 	
@@ -365,11 +336,8 @@ class Gui(wx.Frame):
 			IN: self, event
 			OUT: void
 		"""
-<<<<<<< HEAD
 		self.statusBar.SetStatusMessage('Exiting...')
-=======
 		sys.stdout.write('Closing now... ')
->>>>>>> will-edit
 		self.Close()
 
 # MAIN:
