@@ -64,26 +64,34 @@ class Gui(wx.Frame):
 		self.panel = wx.Panel(self)
 		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		
-		# Add the image view, in a vertical box sizer.
+		# Add the image view into a vertical box sizer.
+		leftVBox = wx.BoxSizer(wx.VERTICAL)
 		self.draw(self.defaultImgPath)
-		hbox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
+		leftVBox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
 		
-		# Add the buttons, in a vertical box sizer.
-		btnVBox = wx.BoxSizer(wx.VERTICAL)
+		# Add the 'Fractalize' button in that same sizer.
+		fractalBtn = wx.Button(self.panel, -1, 'Fractalize')
+		fractalBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		leftVBox.Add(fractalBtn, 1, wx.ALIGN_CENTER)
 		
-		ubuntuBtn = wx.Button(self.panel, -1, "UBUNTU") # (ubuntuBtn because the pictures is a joke on Ubuntu Touch)
+		hbox.Add(leftVBox, 0, wx.ALIGN_CENTER)
+		
+		# Add the buttons, in another vertical box sizer.
+		rightVBox = wx.BoxSizer(wx.VERTICAL)
+		
+		ubuntuBtn = wx.Button(self.panel, -1, "Ubuntu") # (ubuntuBtn because the pictures is a joke on Ubuntu Touch)
 		ubuntuBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
+		rightVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
 		
-		fernBtn = wx.Button(self.panel, -1, 'FERN')
+		fernBtn = wx.Button(self.panel, -1, 'Fern')
 		fernBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
+		rightVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
 		
-		defaultBtn = wx.Button(self.panel, -1, 'DEFAULT')
+		defaultBtn = wx.Button(self.panel, -1, 'Default')
 		defaultBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
+		rightVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
 		
-		hbox.Add(btnVBox, 1, wx.ALIGN_CENTER)
+		hbox.Add(rightVBox, 1, wx.ALIGN_CENTER)
 		
 		# Set sizers.
 		self.panel.SetSizer(hbox)
