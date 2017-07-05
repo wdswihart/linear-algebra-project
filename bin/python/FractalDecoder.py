@@ -124,3 +124,6 @@ class FractalDecoder:
                         self.__nextStep()
                 #Display result of the decoding
                 self.__showResult()
+
+steps = 10
+				
