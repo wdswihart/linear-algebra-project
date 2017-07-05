@@ -54,7 +54,7 @@ class Gui(wx.Frame):
 	
 	def reset(self):
 		"""
-		reset resets the left and right sides of the GUI, which are then suitable for redrawing.
+		reset resets the GUI, which is then suitable for redrawing.
 			IN: self
 			OUT: void
 		"""
@@ -194,58 +194,6 @@ class Gui(wx.Frame):
 		self.Centre()
 		self.Show()
 		
-		"""
-		# Add the status bar.
-		self.statusBar = self.CreateStatusBar()
-		
-		# Add the menu bar.
-		self.menuBar = wx.MenuBar()
-		
-		# 	Add the File menu.
-		self.fileMenu = wx.Menu()
-		exitItem = self.fileMenu.Append(wx.ID_EXIT, 'Exit', 'Exit to Desktop')
-		self.Bind(wx.EVT_MENU, self.onExit, exitItem) # Event binding for 'Exit to Desktop' File menu item.
-		self.menuBar.Append(self.fileMenu, 'File')
-		
-		# 	Add the Help menu.
-		self.helpMenu = wx.Menu()
-		aboutItem = self.helpMenu.Append(wx.ID_ABOUT, 'About', 'About this program')
-		self.Bind(wx.EVT_MENU, self.onAbout, aboutItem) # Event binding for 'About' File menu item.
-		self.menuBar.Append(self.helpMenu, 'Help')
-		
-		# 	Add other menus (?).
-		#TO-DO
-		
-		self.SetMenuBar(self.menuBar)
-		
-		# Init the container panel.
-		self.panel = wx.Panel(self)
-		
-		# Add the image view into a vertical box sizer.
-		path = resPath + defaultImg
-		self.leftImgVBox.Add(self.draw(path), 0, wx.ALIGN_CENTER)
-		self.leftVBox.Add(self.leftImgVBox, 0, wx.ALIGN_CENTER)
-		
-		# Add the 'Fractalize!' button in that same sizer.
-		fractalBtn = wx.Button(self.panel, -1, 'Fractalize!')
-		fractalBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		self.leftVBox.Add(fractalBtn, 1, wx.ALIGN_CENTER)
-		
-		self.hbox.Add(self.leftVBox, 0, wx.ALIGN_CENTER)
-		
-		# Add the buttons, in the right vertical box sizer.
-		self.addButtons()
-		self.hbox.Add(self.rightVBox, 1, wx.ALIGN_CENTER)
-		
-		# Set sizer.
-		self.panel.SetSizer(self.hbox)
-		
-		# Set the size and orientation, and show the GUI.
-		self.SetSize((frameWidth, frameHeight))
-		self.Centre()
-		self.Show(True)
-		"""
-		
 	def _init_(self, parent, title):
 		# super()
 		wx.Frame._init_(self, parent, title=title, size=(frameWidth,frameHeight))
@@ -330,6 +278,7 @@ class Gui(wx.Frame):
 			IN: self, event
 			OUT: void
 		"""
+		self.statusBar.SetStatusMessage('Exiting...')
 		self.Close()
 		
 # MAIN:
