@@ -1,4 +1,8 @@
-#Falla Coulibaly
+# FractalEncoder contains all the classes needed to fractal-compress an image.
+#
+# Falla Coulibaly, William Swihart
+# University of Central Arkansas
+# Summer 2017 
 
 import sys
 import multiprocessing

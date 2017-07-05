@@ -1,4 +1,8 @@
-#Falla Coulibaly
+# FractalDecoder contains all the classes needed to decode a fractal-compressed image.
+#
+# Falla Coulibaly, William Swihart
+# University of Central Arkansas
+# Summer 2017 
 
 import wx #from PIL import Image
 
