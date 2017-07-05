@@ -16,6 +16,10 @@ from FractalDecoder import FractalDecoder # Custom fractal decoder
 
 frameWidth = ctypes.windll.user32.GetSystemMetrics(0) / 1.5 # Frame width will be 1/1.5 screen width,
 frameHeight = ctypes.windll.user32.GetSystemMetrics(1) / 1.5 # 	and height will be 1/1.5 screen height
+resPath = '../../res/'
+defaultImg = 'Lena.jpg'
+ubuntuImg = 'Ubuntu.png'
+fernImg = 'Fern.png'
 
 # CLASSES:
 
@@ -30,10 +34,23 @@ class Gui(wx.Frame):
 	hbox = wx.BoxSizer(wx.HORIZONTAL) # Sizer for panel (above)
 	leftVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for left side of frame
 	rightVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for right side of frame
-	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
-	defaultImgPath = '../../res/Lena.jpg' # Default image path
+	leftImgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
+	rightImgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding images on the right
 
 	# Gui INITIALIZERS:
+	
+	def addButtons(self):
+		ubuntuBtn = wx.Button(self.panel, -1, 'Ubuntu')
+		ubuntuBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		self.rightVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
+		
+		fernBtn = wx.Button(self.panel, -1, 'Fern')
+		fernBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		self.rightVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
+		
+		defaultBtn = wx.Button(self.panel, -1, 'Default')
+		defaultBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		self.rightVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
 	
 	def initUI(self):
 		"""
@@ -68,8 +85,9 @@ class Gui(wx.Frame):
 		self.panel = wx.Panel(self)
 		
 		# Init the image view, in the left vertical box sizer.
-		self.draw(self.defaultImgPath)
-		self.leftVBox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
+		path = resPath + defaultImg
+		self.leftImgVBox = self.draw(path)
+		self.leftVBox.Add(self.leftImgVBox, 0, wx.ALIGN_CENTER)
 		
 		# Add the 'Fractalize' button on the left vertical box sizer.
 		fractalBtn = wx.Button(self.panel, -1, 'Fractalize!')
@@ -79,20 +97,7 @@ class Gui(wx.Frame):
 		self.hbox.Add(self.leftVBox, 0, wx.ALIGN_CENTER)
 		
 		# Add the buttons, in the right vertical box sizer.
-		self.rightVBox = wx.BoxSizer(wx.VERTICAL)
-		
-		ubuntuBtn = wx.Button(self.panel, -1, 'Ubuntu')
-		ubuntuBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		self.rightVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
-		
-		fernBtn = wx.Button(self.panel, -1, 'Fern')
-		fernBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		self.rightVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
-		
-		defaultBtn = wx.Button(self.panel, -1, 'Default')
-		defaultBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		self.rightVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
-		
+		self.addButtons()
 		self.hbox.Add(self.rightVBox, 1, wx.ALIGN_CENTER)
 		
 		# Set sizer.
@@ -115,12 +120,14 @@ class Gui(wx.Frame):
 			IN: self
 			OUT: void 
 		"""
-		self.imgVBox.Clear(True)
+		imgVBox = wx.BoxSizer(wx.VERTICAL)
 		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
 		scale = (frameWidth / img.GetWidth()) / 2.5
 		img = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
 		bmp = wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight()))
-		self.imgVBox.Add(bmp, 0, wx.ALIGN_CENTER)
+		imgVBox.Add(bmp, 0, wx.ALIGN_CENTER)
+		return imgVBox
+		
 	
 	# Gui HANDLERS:
 	
@@ -152,16 +159,28 @@ class Gui(wx.Frame):
 		
 		# Check the label:
 		if label == 'Ubuntu':
-			sys.stdout.write('Drawing linuxandroid.png... ')
-			self.draw('../../res/linuxandroid.png')
+			self.leftImgVBox.Clear(True)
+			sys.stdout.write('Drawing ' + ubuntuImg + '... ')
+			path = resPath + ubuntuImg
+			self.leftImgVBox = self.draw(path)
 		elif label == 'Fern':
-			sys.stdout.write('Drawing fractal_fern.png... ')
-			self.draw('../../res/fractal_fern.png')
+			self.leftImgVBox.Clear(True)
+			sys.stdout.write('Drawing ' + fernImg + '... ')
+			path = resPath + fernImg
+			self.leftImgVBox = self.draw(path)
 		elif label == 'Default':
-			sys.stdout.write('Drawing default image... ')
-			self.draw(self.defaultImgPath)
+			self.leftImgVBox.Clear(True)
+			sys.stdout.write('Drawing ' + defaultImg + '... ')
+			path = resPath + defaultImg
+			self.leftImgVBox = self.draw(path)
 		elif label == 'Fractalize!':
+			self.rightVBox.Clear(True)
 			sys.stdout.write('Handling ' + evt.GetEventObject().GetLabel() + ' event... ')
+			self.rightVBox.Add(self.leftImgVBox, 0, wx.ALIGN_CENTER)
+			backBtn = wx.Button(self.panel, -1, '<-- Back')
+			backBtn.Bind(wx.EVT_BUTTON, self.onPress)
+			self.rightVBox.Add(backBtn, 1, wx.ALIGN_CENTER)
+			self.hbox.Add(self.rightVBox, 1, wx.ALIGN_CENTER)
 			
 		print 'Done!'
 	
