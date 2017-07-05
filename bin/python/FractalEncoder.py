@@ -7,7 +7,7 @@
 import sys
 import multiprocessing
 import threading
-import wix #from PIL import Image
+import wx #from PIL import Image
           
 class RangeBlock:
         def __init__(self, pixels):

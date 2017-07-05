@@ -25,8 +25,12 @@ class Gui(wx.Frame):
 	"""
 	# Gui FIELDS:
 	
+	statusBar = None # Status bar at the bottom of the frame
 	panel = None # Container for image view and buttons
-	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image
+	hbox = wx.BoxSizer(wx.HORIZONTAL) # Sizer for panel (above)
+	leftVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for left side of frame
+	rightVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for right side of frame
+	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
 	defaultImgPath = '../../res/Lena.jpg' # Default image path
 
 	# Gui INITIALIZERS:
@@ -38,7 +42,7 @@ class Gui(wx.Frame):
 			OUT: void
 		"""
 		# Add the status bar.
-		self.CreateStatusBar()
+		self.statusBar = self.CreateStatusBar()
 		
 		# Add the menu bar.
 		self.menuBar = wx.MenuBar()
@@ -60,33 +64,39 @@ class Gui(wx.Frame):
 		
 		self.SetMenuBar(self.menuBar)
 		
-		# Add a container panel and horizontal box sizer.
+		# Init the container panel and horizontal box sizer.
 		self.panel = wx.Panel(self)
-		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		
-		# Add the image view, in a vertical box sizer.
+		# Init the image view, in the left vertical box sizer.
 		self.draw(self.defaultImgPath)
-		hbox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
+		self.leftVBox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
 		
-		# Add the buttons, in a vertical box sizer.
-		btnVBox = wx.BoxSizer(wx.VERTICAL)
+		# Add the 'Fractalize' button on the left vertical box sizer.
+		fractalBtn = wx.Button(self.panel, -1, 'Fractalize!')
+		fractalBtn.Bind(wx.EVT_BUTTON, self.onPress)
+		self.leftVBox.Add(fractalBtn, 1, wx.ALIGN_CENTER)
 		
-		ubuntuBtn = wx.Button(self.panel, -1, "UBUNTU") # (ubuntuBtn because the pictures is a joke on Ubuntu Touch)
+		self.hbox.Add(self.leftVBox, 0, wx.ALIGN_CENTER)
+		
+		# Add the buttons, in the right vertical box sizer.
+		self.rightVBox = wx.BoxSizer(wx.VERTICAL)
+		
+		ubuntuBtn = wx.Button(self.panel, -1, 'Ubuntu')
 		ubuntuBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
+		self.rightVBox.Add(ubuntuBtn, 0, wx.ALIGN_CENTER)
 		
-		fernBtn = wx.Button(self.panel, -1, 'FERN')
+		fernBtn = wx.Button(self.panel, -1, 'Fern')
 		fernBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
+		self.rightVBox.Add(fernBtn, 1, wx.ALIGN_CENTER)
 		
-		defaultBtn = wx.Button(self.panel, -1, 'DEFAULT')
+		defaultBtn = wx.Button(self.panel, -1, 'Default')
 		defaultBtn.Bind(wx.EVT_BUTTON, self.onPress)
-		btnVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
+		self.rightVBox.Add(defaultBtn, 2, wx.ALIGN_CENTER)
 		
-		hbox.Add(btnVBox, 1, wx.ALIGN_CENTER)
+		self.hbox.Add(self.rightVBox, 1, wx.ALIGN_CENTER)
 		
-		# Set sizers.
-		self.panel.SetSizer(hbox)
+		# Set sizer.
+		self.panel.SetSizer(self.hbox)
 		
 		# Set the size and orientation, and show the GUI.
 		self.SetSize((frameWidth, frameHeight))
@@ -101,7 +111,7 @@ class Gui(wx.Frame):
 	
 	def draw(self, path):
 		""" 
-		draw redraws the image view with the given image path.
+		draw updates imgVBox (the image view) with a new filepath.
 			IN: self
 			OUT: void 
 		"""
@@ -109,19 +119,27 @@ class Gui(wx.Frame):
 		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
 		scale = (frameWidth / img.GetWidth()) / 2.5
 		img = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
-		self.imgVBox.Add(wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight())), 0, wx.ALIGN_CENTER)
+		bmp = wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight()))
+		self.imgVBox.Add(bmp, 0, wx.ALIGN_CENTER)
 	
 	# Gui HANDLERS:
 	
 	def onAbout(self, evt):
 		"""
-		onAbout is the behavior associated with the 'About' File menu option.
+		onAbout is the handler associated with the 'About' File menu option.
 			IN: self, event
 			OUT: void
 		"""
 		dlg = wx.MessageDialog(self, 'A fractal compression demonstration', 'About LA&M Project')
 		dlg.ShowModal()
 		dlg.Destroy()
+		
+	def onMouseOver(self, evt):
+		"""
+		onMouseOver is the handler for mouse over events.
+		"""
+		# Display the filename in the status bar.
+		
 		
 	def onPress(self, evt):
 		"""
@@ -133,13 +151,19 @@ class Gui(wx.Frame):
 		label = evt.GetEventObject().GetLabel()
 		
 		# Check the label:
-		if label == 'UBUNTU':
-			self.draw('../../res/linuxandroid.png') # ('Ubuntu Touch'-related picture)
-		elif label == 'FERN':
+		if label == 'Ubuntu':
+			sys.stdout.write('Drawing linuxandroid.png... ')
+			self.draw('../../res/linuxandroid.png')
+		elif label == 'Fern':
+			sys.stdout.write('Drawing fractal_fern.png... ')
 			self.draw('../../res/fractal_fern.png')
-		if label == 'DEFAULT':
+		elif label == 'Default':
+			sys.stdout.write('Drawing default image... ')
 			self.draw(self.defaultImgPath)
-		print evt.GetEventObject().GetLabel(), ' event handled.'
+		elif label == 'Fractalize!':
+			sys.stdout.write('Handling ' + evt.GetEventObject().GetLabel() + ' event... ')
+			
+		print 'Done!'
 	
 	def onExit(self, evt):
 		"""
@@ -147,16 +171,17 @@ class Gui(wx.Frame):
 			IN: self, event
 			OUT: void
 		"""
-		self.Close(True)
+		sys.stdout.write('Closing now...')
+		self.Close()
 		
 # MAIN:
 
-app = wx.App(False)
+app = wx.App()
 sys.stdout.write('Initializing GUI... ')
 gui = Gui(None, wx.ID_ANY, 'LA&M Project')
 gui.initUI()
 print 'Done!'
 print 'Running main loop...'
 app.MainLoop()
-print 'Done! Exiting now...'
+print 'Done!'
 	
