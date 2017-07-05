@@ -124,4 +124,9 @@ class FractalDecoder:
                         self.__nextStep()
                 #Display result of the decoding
                 self.__showResult()
+<<<<<<< HEAD
+=======
+
+steps = 10
+>>>>>>> will-edit
 				

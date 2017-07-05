@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> will-edit
 #Falla Coulibaly
@@ -7,6 +8,15 @@
 #Simple implementation of the fractal compression.
 #The algorithm used is not optimal and average error
 #is quite high because of the mapping algorithm.
+=======
+# Simple implementation of a fractal compression algorithm.
+# 	The algorithm used is not optimal and average error
+# 	is quite high because of the mapping algorithm.
+#
+# Falla Coulibaly, William Swihart
+# University of Central Arkansas
+# Summer 2017
+>>>>>>> will-edit
 
 from FractalDecoder import *
 from FractalEncoder import *
@@ -31,12 +41,12 @@ if __name__ == '__main__':
         encoder = FractalEncoder(blockSize)
         #Benchmark the encoding
         start = time.time()
-        encoder.encodeImage("LennaLow.bmp")
+        encoder.encodeImage("../../res/LenaLow.bmp")
         print("Elapsed time : {0}\n".format(time.time() - start))
 
         #Decoder
-        decoder = FractalDecoder("Lenna.fif", decompressionScale)
-        ##Benchmark the decoding
+        decoder = FractalDecoder("../../res/Lena.fif", decompressionScale)
+        #Benchmark the decoding
         start = time.time()
         decoder.decodeImage(nSteps)
         print("Elapsed time : {0}".format(time.time() - start))
