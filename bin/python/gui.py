@@ -18,6 +18,7 @@ frameWidth = ctypes.windll.user32.GetSystemMetrics(0) / 1.5 # Frame width will b
 frameHeight = ctypes.windll.user32.GetSystemMetrics(1) / 1.5 # 	and height will be 1/1.5 screen height
 resPath = '../../res/' # resource path
 defaultImg = 'Default.jpg'
+defaultFractalizedImg = 'Lena-fractalized.jpg'
 ubuntuImg = 'Ubuntu.png'
 fernImg = 'Fern.png'
 defaultImgPath = resPath + defaultImg # Default image path
@@ -35,7 +36,8 @@ class Gui(wx.Frame):
 	hbox = wx.BoxSizer(wx.HORIZONTAL) # Sizer for panel (above)
 	leftVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for left side of frame
 	rightVBox = wx.BoxSizer(wx.VERTICAL) # Sizer for right side of frame
-	imgVBox = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
+	imgView = wx.BoxSizer(wx.VERTICAL) # Vertical BoxSizer for holding the image (ImageView)
+	imgLabel = '' # Image being displayed
 
 	# Gui INITIALIZERS:
 	
@@ -72,8 +74,9 @@ class Gui(wx.Frame):
 		self.panel = wx.Panel(self)
 		
 		# Init the image view, in the left vertical box sizer.
-		self.draw(defaultImgPath)
-		self.leftVBox.Add(self.imgVBox, 0, wx.ALIGN_CENTER)
+		self.setImgView(defaultImgPath)
+		self.leftVBox.Add(self.imgView, 0, wx.ALIGN_CENTER)
+		self.imgLabel = 'Default'
 		
 		# Add the 'Fractalize' button on the left vertical box sizer.
 		fractalBtn = wx.Button(self.panel, -1, 'Fractalize!')
@@ -113,18 +116,18 @@ class Gui(wx.Frame):
 		
 	# Gui METHODS:
 	
-	def draw(self, path):
+	def setImgView(self, path):
 		""" 
-		draw updates imgVBox (the image view) with a new filepath.
+		setImgView updates imgView with a new filepath.
 			IN: self
 			OUT: void 
 		"""
-		self.imgVBox.Clear(True)
+		self.imgView.Clear(True)
 		img = wx.Image(path, wx.BITMAP_TYPE_ANY)
 		scale = (frameWidth / img.GetWidth()) / 2.5
-		img = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
-		bmp = wx.StaticBitmap(self.panel, -1, img, (0,0), (img.GetWidth(), img.GetHeight()))
-		self.imgVBox.Add(bmp, 0, wx.ALIGN_CENTER)
+		bmp = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale, 1).ConvertToBitmap()
+		bmp = wx.StaticBitmap(self.panel, -1, bmp, (0,0), (bmp.GetWidth(), bmp.GetHeight()))
+		self.imgView.Add(bmp, 0, wx.ALIGN_CENTER)
 	
 	# Gui HANDLERS:
 	
@@ -134,7 +137,7 @@ class Gui(wx.Frame):
 			IN: self, event
 			OUT: void
 		"""
-		dlg = wx.MessageDialog(self, 'A fractal compression demonstration', 'About LA&M Project')
+		dlg = wx.MessageDialog(self, 'A fractal compression demonstration by:\n\n\tFalla Coulibaly\n\tSheikh Faal\n\tNick Phillips\n\tWilliam Swihart\n\t& Michael Wilson', 'About LA&M Project')
 		dlg.ShowModal()
 		dlg.Destroy()
 		
@@ -147,7 +150,7 @@ class Gui(wx.Frame):
 		
 	def onPress(self, evt):
 		"""
-		onPress is the handler for button presses
+		onPress is the handler for button presses.
 			IN: self, event
 			OUT: void
 		"""
@@ -157,15 +160,21 @@ class Gui(wx.Frame):
 		# Check the label:
 		if label == 'Ubuntu':
 			sys.stdout.write('Drawing ' + ubuntuImg + '... ')
-			self.draw(resPath + ubuntuImg)
+			self.setImgView(resPath + ubuntuImg)
+			self.imgLabel = label
 		elif label == 'Fern':
 			sys.stdout.write('Drawing ' + fernImg + '... ')
-			self.draw(resPath + fernImg)
+			self.setImgView(resPath + fernImg)
+			self.imgLabel = label
 		elif label == 'Default':
 			sys.stdout.write('Drawing default image... ')
-			self.draw(defaultImgPath)
+			self.setImgView(defaultImgPath)
+			self.imgLabel = label
 		elif label == 'Fractalize!':
-			sys.stdout.write('Handling ' + evt.GetEventObject().GetLabel() + ' event... ')
+			sys.stdout.write('Handling ' + label + ' event... ')
+			if self.imgLabel == 'Default':
+				self.setImgView(resPath + defaultFractalizedImg)
+				self.imgLabel = label
 			
 		print 'Done!'
 	
